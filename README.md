@@ -15,5 +15,7 @@ flask run
 
 ### 运行截图
 
-https://github.com/daitianjun/Multiplayer-chat-room-/blob/main/static/img/run1.png
-https://github.com/daitianjun/Multiplayer-chat-room-/blob/main/static/img/run2.png
+![static/img/run1.png](README.assets\run1.png)
+
+![run2](README.assets\run2.png)
+
