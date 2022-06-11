@@ -19,3 +19,6 @@ flask run
 
 ![run2](README.assets\run2.png)
 
+### 服务器部署地址
+
+http://101.42.93.7:8888/
