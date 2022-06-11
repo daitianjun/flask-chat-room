@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="{{ url_for('static',filename='css/bootstrap.css') }}">
+    <style>
+        .left {
+            margin-left: 100px
+        }
+
+        .user {
+            color: #ba8b00;
+        }
+    </style>
+    <title>聊天室</title>
+</head>
+<body>
+<div>
+    <label style="margin-top: 30px;margin-left: 30px">当前用户昵称:&nbsp;&nbsp;&nbsp;</label>{{ user }}
+    <a href="#" style="margin-left: 30px"
+       id="logout" onclick="logout()">退出登录</a>
+    <h1 align="center" class="label label-info">Simple chat
+        room</h1>
+</div>
+<div class="left" id="content" style="margin-bottom: 50px">
+    {% for i in message %}
+        {% if i.user == user %}
+        <span ><label class="user" style="background-color: #20c997">我:</label>&nbsp;&nbsp;&nbsp;<small>{{ i.time }}</small>&nbsp;&nbsp;&nbsp;{{ i.msg }}</span>
+        <br>
+        {% else %}
+        <span><label class="user">{{ i.user }}:</label>&nbsp;&nbsp;&nbsp;<small>{{ i.time }}</small>&nbsp;&nbsp;&nbsp;{{ i.msg }}</span>
+        <br>
+        {% endif %}
+    {% endfor %}
+</div>
+<span style="display:flex;flex-direction:row;" class="left"><input
+        type="text" class="form-control"
+        style="width: 500px" name="content"><input
+        type="button" class="btn btn-success" value="发送"
+        onclick="send()"></span>
+</body>
+
+<script src="{{ url_for('static',filename='js/jquery-3.6.0.min.js') }}"></script>
+<script>
+    function send() {
+        var content = $('.form-control').val()
+        console.log(content)
+        $.ajax({
+            url: '/message',
+            method: 'post',
+            data: JSON.stringify({
+                'content': content,
+                'user': "{{ user }}"
+            }),
+            contentType: 'application/json',
+            success: function (data) {
+                $('.form-control').val('')
+            }
+        })
+        $.ajax({
+            url: '/message',
+            method: 'get',
+            success: function (data) {
+                var content = ''
+                 for (i in data.message) {
+                        if(data.message[i]['user']=="{{ user }}"){ content += '<span><label class="user" style="background-color: #20c997">我:</label>&nbsp;&nbsp;&nbsp;<small>' + data.message[i].time + '</small>&nbsp;&nbsp;&nbsp;' + data.message[i].msg + '</span><br>'}
+                        else{content += '<span><label class="user">' + data.message[i]['user'] + ':</label>&nbsp;&nbsp;&nbsp;<small>' + data.message[i].time + '</small>&nbsp;&nbsp;&nbsp;' + data.message[i].msg + '</span><br>'}
+                    }
+                $('#content').html(content)
+            }
+        })
+    }
+</script>
+<script>
+    {#  创建一个计时器每过10秒自动刷新#}
+    var inteverid
+    //建立定时器任务 2000毫秒一次
+    function func() {
+        inteverid = window.setInterval(function () {
+            $.ajax({
+                url: '/message',
+                method: 'get',
+                success: function (data) {
+                    var content = ''
+                    for (i in data.message) {
+                        if(data.message[i]['user']=="{{ user }}"){ content += '<span><label class="user" style="background-color: #20c997">我:</label>&nbsp;&nbsp;&nbsp;<small>' + data.message[i].time + '</small>&nbsp;&nbsp;&nbsp;' + data.message[i].msg + '</span><br>'}
+                        else{content += '<span><label class="user">' + data.message[i]['user'] + ':</label>&nbsp;&nbsp;&nbsp;<small>' + data.message[i].time + '</small>&nbsp;&nbsp;&nbsp;' + data.message[i].msg + '</span><br>'}
+                    }
+                    $('#content').html(content)
+                }
+            })
+        }, 2000)
+        return inteverid;
+    }
+
+    func()
+
+
+</script>
+<script>
+    function logout() {
+        $.ajax({
+            url: '/logout',
+            method: 'post',
+            contentType: 'application/json',
+            data:JSON.stringify({'nickname':"{{ user }}"}),
+            success:function () {
+                location.href='/'
+            }},
+
+        )
+    }
+</script>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="{{ url_for('static',filename='css/bootstrap.css') }}">
+    <title>用户登录</title>
+</head>
+<body>
+<div class="container"
+     style="margin-top: 100px;">
+    <div style="display: flex;flex-direction: column">
+        <h1 align="center">多人在线聊天室</h1>
+        <div style="text-align: center"><img
+                src="{{ url_for('static',filename='img/1.jpg') }}"
+                style="width: 300px"></div>
+        <div style="text-align: center;display: flex;flex-direction: row;padding: 0 25%">
+                <input
+                        type="text" class="form-control"
+                        placeholder="请输入昵称"
+                        name="name"><input type="button"
+                                           class="btn btn-success"
+                                           value="登录"
+                                           onclick="return check()">
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="{{ url_for('static',filename='js/jquery-3.6.0.min.js') }}"></script>
+<script>
+    function check() {
+        var name = $('input')[0].value
+        if (name === '') {
+            alert('昵称不能为空！')
+            return false
+        }
+        $.ajax({
+                url: '/',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({'nickname': $('input')[0].value}),
+                success:
+                    function (data) {
+                        location.href = '/admin/' + data.message
+                    },
+                error:
+                    function (data) {
+                        var text = data.responseJSON.message
+                        alert(text)
+                    }
+            }
+        )
+        return false
+
+
+    }
+</script>
+</html>
