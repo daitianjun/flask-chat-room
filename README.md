@@ -12,3 +12,8 @@ pip install flask
 
 ### 项目启动 
 flask run
+
+### 运行截图
+
+https://github.com/daitianjun/Multiplayer-chat-room-/blob/main/static/img/run1.png
+https://github.com/daitianjun/Multiplayer-chat-room-/blob/main/static/img/run2.png
