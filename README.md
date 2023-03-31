@@ -4,6 +4,12 @@
 
 ### 开发环境
 python 3.8
+### 开通端口
+开通 redis的6379端口和 8888端口
+
+# 安装redis
+sudo apt install redis
+编辑 redis的配置文件 redis.conf 修改绑定ip为0.0.0.0
 
 ### 模块安装
 pip install redis
@@ -13,12 +19,8 @@ pip install flask
 ### 项目启动 
 flask run
 
-### 运行截图
 
-![static/img/run1.png](README.assets\run1.png)
-
-![run2](README.assets\run2.png)
 
 ### 服务器部署地址
 
-http://101.42.93.7:8888/
+http://daitianjun.work:8888/
